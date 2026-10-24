@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="hi-Latn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5faff" />
+    <meta name="description" content="Kayenat ke naam ek chhoti si kainaat." />
+    <title>Kayenat ki Kainaat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;500&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=8" />
+    <script defer src="content.js?v=6"></script>
+    <script defer src="app.js?v=13"></script>
+  </head>
+  <body>
+    <main id="app">
+      <section class="screen intro-screen" id="intro" aria-labelledby="intro-title">
+        <div class="intro-copy">
+          <p class="eyebrow intro-line line-one">Aapke liye ek zaroori announcement</p>
+          <h1 id="intro-title" class="intro-line line-two">Excuse meee, Miss <span id="intro-name">Kayenat</span> 👀</h1>
+          <p class="intro-name intro-line line-three" id="intro-message">Ek important announcement hai...</p>
+          <p class="intro-submessage" id="intro-submessage">Aaj ek bohot special insaan ka birthday hai.<br />Ji haan, aap hi ho. Itna surprise mat ho. 😂</p>
+          <p class="urdu-line" lang="ur" dir="rtl">یہ کائنات تمہارے نام</p>
+          <button class="button button-primary enter-button intro-line line-four" id="enter-button" type="button">Achha, batao kya hai? 👀</button>
+        </div>
+        <p class="birthday-note" id="birthday-note"></p>
+        <span class="intro-scroll" aria-hidden="true">Tumhari apni chhoti si duniya</span>
+      </section>
+
+      <section class="screen map-screen is-hidden" id="map" aria-labelledby="map-title" inert>
+        <header class="topbar">
+          <button class="wordmark" id="map-home" type="button" aria-label="Shuruat par wapas jao"><span class="wordmark-star">✳</span> KAYENAT <span class="wordmark-divider">/</span> TUMHARI KAINAAT</button>
+          <div class="progress-pill" aria-label="Safar ki pragati"><span class="progress-spark">✦</span><span id="progress-label">0 / 4 manzilein</span></div>
+        </header>
+        <div class="map-intro">
+          <p class="eyebrow">Birthday girl ka personal adda</p>
+          <h2 id="map-title">Where shall we wander?</h2>
+          <p class="map-subtitle" id="map-greeting">Madam ji, aaj aapka birthday hai. Toh thoda attitude kam chalega kya?</p>
+        </div>
+        <div class="planet-map" aria-label="Apni manzil chuno">
+          <div class="map-path path-one" aria-hidden="true"></div>
+          <div class="map-path path-two" aria-hidden="true"></div>
+          <button class="planet-node node-stars" data-chapter="stars" type="button">
+            <span class="planet planet-gold"><i aria-hidden="true">♡</i></span><span class="node-copy"><span class="node-kicker">01 · CHHOTI SI SHARARAT</span><span class="node-name">Udte dil pakdo</span><span class="node-state">Dekhte hain gaming skills</span></span><span class="node-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="planet-node node-hogya" data-chapter="hogya" type="button">
+            <span class="planet planet-lilac"><i aria-hidden="true">?</i></span><span class="node-copy"><span class="node-kicker">02 · BIRTHDAY QUIZ</span><span class="node-name">Aap mujhe kitna jaanti ho?</span><span class="node-state">Hint: main hi sahi jawab hoon</span></span><span class="node-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="planet-node node-atelier" data-chapter="atelier" type="button">
+            <span class="planet planet-rose"><i aria-hidden="true">✿</i></span><span class="node-copy"><span class="node-kicker">03 · KAYENAT COUTURE STUDIO</span><span class="node-name">Designer sahiba</span><span class="node-state">Neela dhaaga, safed phool</span></span><span class="node-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="planet-node node-memories" data-chapter="memories" type="button">
+            <span class="planet planet-cyan"><i aria-hidden="true">♡</i></span><span class="node-copy"><span class="node-kicker">04 · APNI YAADEN</span><span class="node-name">Kuch apni si baatein</span><span class="node-state">Tasveerein, ek-ek karke</span></span><span class="node-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="planet-node node-cutty" data-chapter="cutty" type="button">
+            <span class="planet planet-cutty"><i aria-hidden="true">♡</i></span><span class="node-copy"><span class="node-kicker">JAB AAP JAANE LAGO</span><span class="node-name">Cuttyyy!</span><span class="node-state">Aise kaise jaane doon?</span></span><span class="node-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="planet-node node-secret is-hidden" data-chapter="secret" type="button">
+            <span class="planet planet-secret"><i aria-hidden="true">☁</i></span><span class="node-copy"><span class="node-kicker">EK CHHOTI SI CHHUPI BAAT</span><span class="node-name">Zada udne ka nhi</span><span class="node-state">Is shararti dil ko pakdo</span></span><span class="node-check" aria-hidden="true">✓</span>
+          </button>
+        </div>
+        <div class="final-destination-wrap">
+          <div class="final-thread" aria-hidden="true"></div>
+          <button class="final-destination" id="final-button" type="button" disabled>
+            <span class="final-star" aria-hidden="true">♡</span><span><span class="node-kicker">BAS EK LAST SURPRISE</span><span class="final-title">Duniya ki sabse badi cheez...</span><span class="final-state" id="final-state">Abhi kuch masti baaki hai</span></span><span class="final-arrow" aria-hidden="true">↗</span>
+          </button>
+        </div>
+        <footer class="map-footer"><span id="birthday-footer">1 November <span class="footer-dot">·</span> sirf tumhare liye</span><button id="reset-progress" type="button">Phir se shuru</button></footer>
+      </section>
+    </main>
+
+    <dialog class="chapter-dialog" id="chapter-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-shell">
+        <header class="dialog-header"><div><p class="eyebrow" id="dialog-kicker"></p><h2 id="dialog-title"></h2></div><button class="icon-button dialog-close" id="dialog-close" type="button" aria-label="Yeh manzil band karo">×</button></header>
+        <div class="dialog-content" id="dialog-content"></div>
+      </div>
+    </dialog>
+
+    <dialog class="comparison-dialog" id="comparison-dialog" aria-labelledby="comparison-title">
+      <div class="comparison-shell">
+        <header class="comparison-topbar"><span class="comparison-brand">KAYENAT KI BIRTHDAY PRESENTATION</span><span class="comparison-count" id="comparison-count">01 / 09</span><button class="icon-button comparison-close" id="comparison-close" type="button" aria-label="Presentation band karo">×</button></header>
+        <div class="comparison-progress"><span id="comparison-progress"></span></div>
+        <section class="comparison-stage" id="comparison-stage" aria-live="polite">
+          <div class="comparison-doodle doodle-left" aria-hidden="true">♡</div><div class="comparison-doodle doodle-right" aria-hidden="true">✿</div>
+          <div class="comparison-art" id="comparison-art"></div>
+          <p class="comparison-eyebrow" id="comparison-eyebrow">DUNIYA KI SABSE BADI CHEEZ...</p>
+          <h2 id="comparison-title"></h2>
+          <p class="comparison-subtitle" id="comparison-subtitle"></p>
+          <p class="comparison-aside" id="comparison-aside"></p>
+        </section>
+        <footer class="comparison-controls">
+          <button class="button button-secondary comparison-prev" id="comparison-prev" type="button">← Peechhe</button>
+          <button class="button button-primary comparison-next" id="comparison-next" type="button">Agla, madam ji →</button>
+          <button class="button button-primary comparison-reveal is-hidden" id="comparison-reveal" type="button">Dikhao phir 👀</button>
+          <button class="button button-secondary comparison-restart" id="comparison-restart" type="button">Phir se shuru</button>
+        </footer>
+      </div>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
