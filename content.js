@@ -29,10 +29,22 @@ window.BIRTHDAY_CONTENT = {
     { question: "Agar main bolun 'bas 2 minute lagenge', toh asal mein?", choices: ["2 minute.", "20 minute.", "Birthday khatam hone tak."], responses: ["Aapka bharosa dekh ke dil khush hogaya. 😂", "Thoda realistic jawab, maan na padega.", "Theek hai, itna bhi sach nahi bolna tha."] },
     { question: "Birthday girl privileges ka matlab?", choices: ["Aaj aapki chalegi.", "Aaj bhi aapki chalegi.", "Hamesha aapki hi chalegi."], responses: ["Aaj ke liye? Bilkul.", "Hmm, baat toh sahi hai.", "Yeh jawab dil se aaya lagta hai."] }
   ],
-  atelier: {
-    complete: "Designer sahiba, collection hogya?",
-    keep: "Ab is masterpiece ko sambhal ke rakhna. Mehnat lagi hai boss. 😂",
-    heart: "Waise, aap jo bhi banati ho na, usmein ek alag hi pyaar hota hai."
+  tasbih: {
+    title: "Thoda sa zikr",
+    invitation: "Chaliye, ab aapki salgirah wale din Allah ko bhi yaad kar liya jaye.",
+    guidance: "Aaraam se padhiye. Har baar padhne ke baad ek tap kijiye.",
+    tap: "Padh liya · +1",
+    next: "Agla zikr",
+    stageComplete: "Yeh zikr poora hua. Jab aap tayyar hon, aage badhiye.",
+    complete: "Alhamdulillah, aapka zikr poora hua.",
+    dua: "Allah aapki zindagi mein sukoon, khair aur barkat ata farmaye. Aameen.",
+    reset: "Ginti phir se shuru karein? Is tasbih ki ginti mit jayegi.",
+    stages: [
+      { name: "Subhan Allah", arabic: "سُبْحَانَ اللّٰهِ", target: 33 },
+      { name: "Alhamdulillah", arabic: "الْحَمْدُ لِلّٰهِ", target: 33 },
+      { name: "Allahu Akbar", arabic: "اللّٰهُ أَكْبَرُ", target: 34 },
+      { name: "Astaghfirullah", arabic: "أَسْتَغْفِرُ اللّٰهَ", target: 50 }
+    ]
   },
   runawayHeart: {
     instruction: "Yeh shararti dil hawa mein udd raha hai. Isse paanch baar pakdo!",

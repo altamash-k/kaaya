@@ -8,7 +8,6 @@
   let toastTimer;
   let gameTimers = [];
   let activeMemory = 0;
-  let stitchColor = "#b9dcff";
   let introStage = 0;
   let surpriseStep = 0;
   let cuttyCount = 0;
@@ -51,7 +50,7 @@
       const lines = {
         stars: "Dil tumhare naam. Kya baat hai!",
         hogya: "Teeno paheliyan solved? Waah beta!",
-        atelier: "Tumhare haathon ka banaya design.",
+        tasbih: content.tasbih.complete,
         memories: "Yeh jagah tumhari yaadon ke naam.",
         secret: "Dil pakad liya na. Zada udne ka nhi."
       };
@@ -60,7 +59,7 @@
   }
 
   function updateProgressUI() {
-    const required = ["stars", "hogya", "atelier", "memories"];
+    const required = ["stars", "hogya", "tasbih", "memories"];
     const count = required.filter((key) => progress.completed.includes(key)).length;
     $("#progress-label").textContent = `${count} / 4 manzilein`;
     const finalButton = $("#final-button");
@@ -113,7 +112,7 @@
   }
 
   function handleFinalButton() {
-    const required = ["stars", "hogya", "atelier", "memories"];
+    const required = ["stars", "hogya", "tasbih", "memories"];
     if (required.some((chapter) => !progress.completed.includes(chapter))) return;
     if (surpriseStep < content.jokes.surprise.length) {
       const message = content.jokes.surprise[surpriseStep];
@@ -135,7 +134,7 @@
     const chapterInfo = {
       stars: ["CHHOTI SI SHARARAT", "Udte dil pakdo"],
       hogya: ["BIRTHDAY REALITY CHECK", "Aap mujhe kitna jaanti ho?"],
-      atelier: ["KAYENAT SILAI STUDIO", "The Kayenat Silai Studio 🧵"],
+      tasbih: ["SUKOON KE PAL", content.tasbih.title],
       memories: ["APNI YAADEN", "Kuch apni si baatein"],
       secret: ["EK CHHOTI SI CHHUPI BAAT", "Zada udne ka nhi"],
       cutty: ["JAB AAP JAANE LAGO", "Cuttyyy!"]
@@ -143,7 +142,7 @@
     if (!chapterInfo) return;
     $("#dialog-kicker").textContent = chapterInfo[0];
     $("#dialog-title").textContent = chapterInfo[1];
-    const renderers = { stars: renderStars, hogya: renderBirthdayQuiz, atelier: renderAtelier, memories: renderMemories, secret: renderSecret, cutty: renderCutty };
+    const renderers = { stars: renderStars, hogya: renderBirthdayQuiz, tasbih: renderTasbih, memories: renderMemories, secret: renderSecret, cutty: renderCutty };
     renderers[chapter]();
     chapterDialog.showModal();
   }
@@ -270,49 +269,86 @@
     $("#cutty-leave").addEventListener("click", () => chapterDialog.close());
   }
 
-  function renderAtelier() {
-    const points = [{ x: 50, y: 18 }, { x: 72, y: 34 }, { x: 70, y: 61 }, { x: 50, y: 79 }, { x: 30, y: 61 }, { x: 28, y: 34 }];
+  function renderTasbih() {
+    const config = content.tasbih;
+    const stored = progress.tasbihCounts;
+    const counts = config.stages.map((stage, index) => Math.min(stage.target, Math.max(0, Number.isInteger(stored?.[index]) ? stored[index] : 0)));
+    let stageIndex = counts.findIndex((count, index) => count < config.stages[index].target);
+    if (stageIndex === -1) stageIndex = config.stages.length - 1;
     dialogContent.innerHTML = `
-      <p class="dialog-lede">Blue ya white dhaaga chuno, phir phool ke 6 nishaan jodo. Yeh design tumhare haathon se banega.</p>
-      <div class="thread-tools" aria-label="Dhaage ka rang chuno"><button class="thread-swatch" style="--thread-color:#b9dcff" data-color="#b9dcff" aria-label="Barfani blue dhaaga" aria-pressed="true" type="button"></button><button class="thread-swatch" style="--thread-color:#f0f7ff" data-color="#f0f7ff" aria-label="White dhaaga" aria-pressed="false" type="button"></button><button class="thread-swatch" style="--thread-color:#7faee8" data-color="#7faee8" aria-label="Gehra blue dhaaga" aria-pressed="false" type="button"></button><button class="thread-swatch" style="--thread-color:#d2e4fa" data-color="#d2e4fa" aria-label="Chandni dhaaga" aria-pressed="false" type="button"></button></div>
-      <div class="thread-board" id="thread-board" aria-label="Kapde par phool ki kadhai, nishaan 1 se 6 tak jodo"><svg class="stitch-path" viewBox="0 0 100 100" aria-hidden="true" preserveAspectRatio="none"></svg>${points.map((point, index) => `<button class="stitch-node" type="button" data-index="${index}" style="left:${point.x}%;top:${point.y}%" aria-label="Phool ka nishaan ${index + 1} jodo">${index + 1}</button>`).join("")}</div>
-      <p class="atelier-note" id="atelier-note" aria-live="polite">Pehle star se shuru karo. Aahista aahista.</p>
-      <div class="dialog-actions"><button class="button button-secondary button-small" id="atelier-reset" type="button">Dhaaga khol kar phir se</button><button class="button button-primary button-small is-hidden" id="save-design" type="button">Apna naqsh sahejo</button></div>`;
-    let next = 0;
-    const path = $(".stitch-path");
-    const drawPath = () => {
-      const visited = points.slice(0, next).map(({ x, y }) => `${x},${y}`).join(" ");
-      path.innerHTML = visited ? `<polyline points="${visited}" style="--stitch-color:${stitchColor}" />` : "";
+      <section class="tasbih-experience" aria-label="Tasbih">
+        <p class="dialog-lede">${escapeHtml(config.invitation)}</p>
+        <ol class="tasbih-steps" aria-label="Zikr ke chaar hisse">${config.stages.map((stage, index) => `<li data-stage="${index}"><span>${index + 1}</span>${escapeHtml(stage.name)}</li>`).join("")}</ol>
+        <p class="tasbih-arabic" id="tasbih-arabic" lang="ar" dir="rtl"></p>
+        <h3 class="tasbih-name" id="tasbih-name"></h3>
+        <p class="tasbih-target" id="tasbih-target"></p>
+        <div class="tasbih-ring">
+          <svg id="tasbih-beads" viewBox="0 0 320 320" aria-hidden="true"></svg>
+          <div class="tasbih-count"><output id="tasbih-count" aria-label="Is zikr ki ginti" aria-live="off">0</output><span id="tasbih-total"></span></div>
+        </div>
+        <p class="tasbih-guidance">${escapeHtml(config.guidance)}</p>
+        <button class="button button-primary tasbih-tap" id="tasbih-tap" type="button">${escapeHtml(config.tap)}</button>
+        <p class="tasbih-status" id="tasbih-status" role="status"></p>
+        <button class="button button-primary is-hidden" id="tasbih-next" type="button">${escapeHtml(config.next)}</button>
+        <div class="tasbih-secondary"><button class="button button-secondary button-small" id="tasbih-undo" type="button">Ek ginti kam</button><button class="button button-secondary button-small" id="tasbih-reset" type="button">Ginti phir se</button></div>
+      </section>`;
+    const update = () => {
+      const stage = config.stages[stageIndex];
+      const count = counts[stageIndex];
+      const stageDone = count === stage.target;
+      const allDone = counts.every((value, index) => value === config.stages[index].target);
+      $("#tasbih-arabic").textContent = stage.arabic;
+      $("#tasbih-name").textContent = stage.name;
+      $("#tasbih-target").textContent = `${stage.target} martaba`;
+      $("#tasbih-count").textContent = count;
+      $("#tasbih-total").textContent = `/ ${stage.target}`;
+      $("#tasbih-tap").disabled = stageDone;
+      $("#tasbih-tap").classList.toggle("is-hidden", stageDone);
+      $("#tasbih-undo").disabled = count === 0;
+      $("#tasbih-next").classList.toggle("is-hidden", !stageDone || allDone);
+      $("#tasbih-status").textContent = allDone ? `${config.complete} ${config.dua}` : stageDone ? config.stageComplete : "";
+      $$(".tasbih-steps li").forEach((item, index) => {
+        item.classList.toggle("is-done", counts[index] === config.stages[index].target);
+        if (index === stageIndex) item.setAttribute("aria-current", "step");
+        else item.removeAttribute("aria-current");
+      });
+      $("#tasbih-beads").innerHTML = `<circle cx="160" cy="160" r="132" fill="none" stroke="#c6dcef" stroke-width="1.5"/>${Array.from({ length: stage.target }, (_, index) => {
+        const angle = (index / stage.target) * Math.PI * 2 - Math.PI / 2;
+        const beadClass = index < count ? "tasbih-bead is-counted" : "tasbih-bead";
+        return `<circle class="${beadClass}" cx="${160 + Math.cos(angle) * 132}" cy="${160 + Math.sin(angle) * 132}" r="${stage.target > 34 ? 5.2 : 7.5}"/>`;
+      }).join("")}`;
     };
-    $$(".thread-swatch").forEach((button) => button.addEventListener("click", () => {
-      stitchColor = button.dataset.color;
-      $$(".thread-swatch").forEach((swatch) => swatch.setAttribute("aria-pressed", String(swatch === button)));
-      drawPath();
-    }));
-    $$(".stitch-node").forEach((button) => button.addEventListener("click", () => {
-      const index = Number(button.dataset.index);
-      if (index !== next) {
-        button.classList.remove("wrong"); void button.offsetWidth; button.classList.add("wrong");
-        $("#atelier-note").textContent = "Ek ek sitara, sahi tarteeb se.";
-        return;
-      }
-      button.classList.add("done"); button.disabled = true; next += 1; drawPath();
-      if (next === points.length) {
-        $("#atelier-note").innerHTML = `<strong>${escapeHtml(content.atelier.complete)}</strong><span>${escapeHtml(content.atelier.keep)}</span><em>${escapeHtml(content.atelier.heart)}</em>`;
-        $("#save-design").classList.remove("is-hidden");
-        markComplete("atelier");
-      } else $("#atelier-note").textContent = `Khoob! Ab star ${next + 1} dhoondo.`;
-    }));
-    $("#atelier-reset").addEventListener("click", () => {
-      next = 0; $$(".stitch-node").forEach((button) => { button.classList.remove("done", "wrong"); button.disabled = false; });
-      drawPath(); $("#atelier-note").textContent = "Pehle star se shuru karo. Aahista aahista.";
+    const persist = () => { progress.tasbihCounts = [...counts]; saveProgress(); };
+    $("#tasbih-tap").addEventListener("click", () => {
+      const stage = config.stages[stageIndex];
+      if (counts[stageIndex] >= stage.target) return;
+      counts[stageIndex] += 1;
+      persist();
+      update();
+      if (counts.every((value, index) => value === config.stages[index].target)) markComplete("tasbih");
     });
-    $("#save-design").addEventListener("click", () => {
-      const pointsText = points.map(({ x, y }) => `${x},${y}`).join(" ");
-      const petals = [0, 60, 120].map((angle) => `<ellipse cx="50" cy="32" rx="10" ry="19" transform="rotate(${angle} 50 50)"/>`).join("");
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#f5faff" stroke="#b9dcff" stroke-width=".7"/><g fill="#e4f1ff" stroke="#79b8f5" stroke-width=".6">${petals}<circle cx="50" cy="50" r="7" fill="#fff"/></g><polyline points="${pointsText}" fill="none" stroke="${stitchColor}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>${points.map(({ x, y }) => `<circle cx="${x}" cy="${y}" r="2" fill="#e8f5ff"/>`).join("")}</svg>`;
-      const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" })); link.download = "kayenat-constellation.svg"; link.click(); URL.revokeObjectURL(link.href);
+    $("#tasbih-next").addEventListener("click", () => {
+      if (counts[stageIndex] !== config.stages[stageIndex].target || stageIndex >= config.stages.length - 1) return;
+      stageIndex += 1;
+      update();
+      $("#tasbih-tap").focus();
     });
+    $("#tasbih-undo").addEventListener("click", () => {
+      if (counts[stageIndex] === 0) return;
+      counts[stageIndex] -= 1;
+      progress.completed = progress.completed.filter((key) => key !== "tasbih");
+      persist();
+      update();
+    });
+    $("#tasbih-reset").addEventListener("click", () => {
+      if (!window.confirm(config.reset)) return;
+      counts.fill(0);
+      stageIndex = 0;
+      progress.completed = progress.completed.filter((key) => key !== "tasbih");
+      persist();
+      update();
+    });
+    update();
   }
 
   function renderMemories() {

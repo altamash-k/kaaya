@@ -401,3 +401,33 @@ body { background: radial-gradient(ellipse at 8% 8%, #e4f1ff, transparent 39%), 
 .planet-map .node-state { font-size: 11px; line-height: 1.4; }
 .planet-map .node-check { top: 13px; right: 54px; font-size: 13px; }
 .planet-map .node-cutty .node-copy { justify-items: stretch; }
+
+.tasbih-experience { max-width: 520px; margin: 0 auto; text-align: center; }
+.tasbih-experience .dialog-lede { margin-bottom: 20px; font-size: 14px; }
+.tasbih-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 0 0 20px; padding: 0; list-style: none; }
+.tasbih-steps li { color: #647f9c; font-size: 10px; line-height: 1.5; overflow-wrap: anywhere; }
+.tasbih-steps li span { display: grid; width: 26px; height: 26px; place-items: center; margin: 0 auto 6px; border: 1px solid #d5e7fa; border-radius: 50%; background: #f5faff; font-size: 11px; }
+.tasbih-steps li[aria-current="step"] { color: #245b9b; font-weight: 700; }
+.tasbih-steps li[aria-current="step"] span { border-color: #3478d4; box-shadow: 0 0 0 3px #e4f1ff; }
+.tasbih-steps li.is-done span { background: #3478d4; border-color: #3478d4; color: white; }
+.tasbih-arabic { margin: 10px 0 2px; padding: 6px 0; color: #245b9b; font-family: "Noto Nastaliq Urdu", "Traditional Arabic", serif; font-size: 27px; line-height: 2; }
+.tasbih-name { margin: 4px 0; color: #193b63; font-family: var(--serif); font-size: 25px; font-weight: 500; }
+.tasbih-target { margin: 5px 0 0; color: #647f9c; font-size: 12px; }
+.tasbih-ring { position: relative; width: min(100%, 290px); aspect-ratio: 1; margin: 8px auto 0; }
+.tasbih-ring svg { display: block; width: 100%; height: 100%; }
+.tasbih-bead { fill: #eff6fd; stroke: #bbd6ee; stroke-width: 1.2; transition: fill .15s ease, stroke .15s ease; }
+.tasbih-bead.is-counted { fill: #79b8f5; stroke: #3478d4; }
+.tasbih-count { position: absolute; inset: 25%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; border: 1px solid #e4f1ff; border-radius: 50%; background: radial-gradient(circle at 35% 25%, white, #f0f7ff); font-variant-numeric: tabular-nums; }
+.tasbih-count output { color: #193b63; font-family: var(--serif); font-size: 54px; line-height: 1.2; }
+.tasbih-count span { color: #647f9c; font-size: 14px; }
+.tasbih-guidance { max-width: 34ch; margin: 2px auto 15px; color: #567292; font-size: 12px; line-height: 1.7; }
+.tasbih-tap { width: min(100%, 290px); min-height: 62px; font-size: 16px; touch-action: manipulation; }
+.tasbih-status { margin: 14px auto; color: #245b9b; font-size: 14px; line-height: 1.8; }
+.tasbih-status:empty { display: none; }
+.tasbih-secondary { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; }
+@media (max-width: 360px) {
+  .tasbih-steps { gap: 5px; }
+  .tasbih-steps li { font-size: 9px; }
+  .tasbih-arabic { font-size: 24px; }
+  .tasbih-ring { max-width: 245px; }
+}
